@@ -16,7 +16,6 @@ jobs:
             -project ClaudeWatch.xcodeproj \
             -scheme ClaudeWatch \
             -configuration Release \
-            -sdk iphoneos \
             -derivedDataPath build \
             -destination "generic/platform=iOS" \
             CODE_SIGNING_ALLOWED=NO \
