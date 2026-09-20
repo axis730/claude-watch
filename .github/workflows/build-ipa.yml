@@ -1,0 +1,41 @@
+name: Build unsigned IPA
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build ClaudeWatch (iOS + embedded watchOS, unsigned)
+        working-directory: ios/ClaudeWatch
+        run: |
+          xcodebuild \
+            -project ClaudeWatch.xcodeproj \
+            -scheme ClaudeWatch \
+            -configuration Release \
+            -sdk iphoneos \
+            -derivedDataPath build \
+            -destination "generic/platform=iOS" \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            DEVELOPMENT_TEAM="" \
+            clean build
+
+      - name: Package IPA
+        working-directory: ios/ClaudeWatch
+        run: |
+          APP_PATH=$(find build/Build/Products/Release-iphoneos -maxdepth 1 -name "*.app")
+          echo "App: $APP_PATH"
+          mkdir -p Payload
+          cp -r "$APP_PATH" Payload/
+          zip -r ClaudeWatch.ipa Payload
+          ls -la ClaudeWatch.ipa
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ClaudeWatch-ipa
+          path: ios/ClaudeWatch/ClaudeWatch.ipa
