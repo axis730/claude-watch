@@ -24,17 +24,30 @@ jobs:
             DEVELOPMENT_TEAM="" \
             clean build
 
-      - name: Package IPA
+      - name: Package IPA (with Watch app)
         working-directory: ios/ClaudeWatch
         run: |
           APP_PATH=$(find build/Build/Products/Release-iphoneos -maxdepth 1 -name "*.app")
-          echo "App: $APP_PATH"
           mkdir -p Payload
           cp -r "$APP_PATH" Payload/
           zip -r ClaudeWatch.ipa Payload
-          ls -la ClaudeWatch.ipa
+
+      - name: Package IPA (iPhone only, Watch app stripped)
+        working-directory: ios/ClaudeWatch
+        run: |
+          APP_PATH=$(find build/Build/Products/Release-iphoneos -maxdepth 1 -name "*.app")
+          mkdir -p PayloadNoWatch/Payload
+          cp -r "$APP_PATH" PayloadNoWatch/Payload/
+          rm -rf "PayloadNoWatch/Payload/$(basename "$APP_PATH")/Watch"
+          cd PayloadNoWatch && zip -r ../ClaudeWatch-NoWatch.ipa Payload && cd ..
+          ls -la ClaudeWatch-NoWatch.ipa
 
       - uses: actions/upload-artifact@v4
         with:
           name: ClaudeWatch-ipa
           path: ios/ClaudeWatch/ClaudeWatch.ipa
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ClaudeWatch-NoWatch-ipa
+          path: ios/ClaudeWatch/ClaudeWatch-NoWatch.ipa
