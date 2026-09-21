@@ -9,6 +9,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Regenerate Xcode project from project.yml
+        working-directory: ios/ClaudeWatch
+        run: |
+          brew install xcodegen
+          xcodegen generate
+
       - name: Build ClaudeWatch (iOS + embedded watchOS, unsigned)
         working-directory: ios/ClaudeWatch
         run: |

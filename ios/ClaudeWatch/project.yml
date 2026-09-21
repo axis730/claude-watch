@@ -20,7 +20,7 @@ targets:
       - path: Shared
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.shobhit.claudewatch.5CK4JFU7YF
+        PRODUCT_BUNDLE_IDENTIFIER: com.shobhit.claudewatch
         INFOPLIST_FILE: "ClaudeWatch iOS/Info.plist"
         PRODUCT_NAME: Agent Watch
         GENERATE_INFOPLIST_FILE: false
@@ -36,7 +36,7 @@ targets:
       - path: Shared
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.shobhit.claudewatch.5CK4JFU7YF.watchkitapp
+        PRODUCT_BUNDLE_IDENTIFIER: com.shobhit.claudewatch.watchkitapp
         INFOPLIST_FILE: "ClaudeWatch watchOS/Info.plist"
         PRODUCT_NAME: Agent Watch
         GENERATE_INFOPLIST_FILE: false
