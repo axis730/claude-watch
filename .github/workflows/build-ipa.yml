@@ -57,3 +57,32 @@ jobs:
         with:
           name: ClaudeWatch-NoWatch-ipa
           path: ios/ClaudeWatch/ClaudeWatch-NoWatch.ipa
+
+      - name: Build standalone Watch app (no iPhone companion)
+        working-directory: ios/ClaudeWatch
+        run: |
+          xcodebuild \
+            -project ClaudeWatch.xcodeproj \
+            -scheme ClaudeWatchWatch \
+            -configuration Release \
+            -derivedDataPath buildwatch \
+            -destination "generic/platform=watchOS" \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            DEVELOPMENT_TEAM="" \
+            clean build
+
+      - name: Package standalone Watch IPA
+        working-directory: ios/ClaudeWatch
+        run: |
+          APP_PATH=$(find buildwatch/Build/Products/Release-watchos -maxdepth 1 -name "*.app")
+          mkdir -p PayloadWatchOnly/Payload
+          cp -r "$APP_PATH" PayloadWatchOnly/Payload/
+          cd PayloadWatchOnly && zip -r ../ClaudeWatch-Standalone.ipa Payload && cd ..
+          ls -la ClaudeWatch-Standalone.ipa
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ClaudeWatch-Standalone-ipa
+          path: ios/ClaudeWatch/ClaudeWatch-Standalone.ipa
