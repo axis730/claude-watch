@@ -26,5 +26,7 @@
 	<string>Agent Watch uses speech recognition to convert your voice commands to text.</string>
 	<key>WKApplication</key>
 	<true/>
+	<key>WKCompanionAppBundleIdentifier</key>
+	<string>com.shobhit.claudewatch</string>
 </dict>
 </plist>
